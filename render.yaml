@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: toronto-planner
+    env: static
+    staticPublishPath: .
+    buildCommand: ""
