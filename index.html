@@ -41,21 +41,23 @@
     <main class="schedule-wrap">
       <div id="schedule" class="schedule"></div>
       <div class="below-calendar">
-        <section class="bc-section">
-          <h3 class="bc-heading">🗺️ Day Combos</h3>
-          <p class="bc-subheading">Activities that work well together geographically</p>
-          <div id="combos-grid" class="combos-grid"></div>
-        </section>
-        <section class="bc-section">
-          <h3 class="bc-heading">🚇 Getting Around</h3>
+        <div class="bc-tabs">
+          <button class="bc-tab active" data-tab="transit">🚇 Getting Around</button>
+          <button class="bc-tab" data-tab="neighbourhoods">🏙️ Neighbourhoods</button>
+          <button class="bc-tab" data-tab="combos">🗺️ Day Combos</button>
+        </div>
+        <div class="bc-panel active" id="panel-transit">
           <p class="bc-subheading">Toronto transit basics for first-timers</p>
           <div id="transit-grid" class="transit-grid"></div>
-        </section>
-        <section class="bc-section">
-          <h3 class="bc-heading">🏙️ Neighbourhood Guide</h3>
+        </div>
+        <div class="bc-panel" id="panel-neighbourhoods">
           <p class="bc-subheading">What each part of the city is known for</p>
           <div id="neighbourhood-grid" class="neighbourhood-grid"></div>
-        </section>
+        </div>
+        <div class="bc-panel" id="panel-combos">
+          <p class="bc-subheading">Activities that work well together geographically</p>
+          <div id="combos-grid" class="combos-grid"></div>
+        </div>
       </div>
     </main>
 

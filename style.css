@@ -175,22 +175,33 @@ header h1 {
 /* ── BELOW CALENDAR ── */
 .below-calendar {
   margin-top: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-}
-
-.bc-section {
-  padding-top: 16px;
   border-top: 2px solid var(--border);
+  padding-top: 14px;
 }
 
-.bc-heading {
-  font-size: 0.88rem;
-  font-weight: 900;
-  color: var(--dark);
-  margin-bottom: 2px;
+.bc-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
 }
+
+.bc-tab {
+  padding: 6px 14px;
+  border-radius: 30px;
+  border: 2px solid var(--border);
+  background: var(--white);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--mid);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.bc-tab:hover { border-color: var(--blue); color: var(--dark); }
+.bc-tab.active { background: var(--blue); border-color: var(--blue); color: white; }
+
+.bc-panel { display: none; }
+.bc-panel.active { display: block; }
 
 .bc-subheading {
   font-size: 0.71rem;
