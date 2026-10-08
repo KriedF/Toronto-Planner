@@ -432,6 +432,7 @@ header h1 {
   border: 2px solid transparent;
   transition: transform 0.12s, box-shadow 0.12s;
   line-height: 1.2;
+  touch-action: none;
 }
 .placed-card:hover { transform: scale(1.04); box-shadow: 0 4px 12px rgba(0,0,0,0.14); z-index: 2; position: relative; }
 .placed-card:active { cursor: grabbing; }
@@ -465,3 +466,79 @@ header h1 {
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: #F0F6FA; }
 ::-webkit-scrollbar-thumb { background: #C4D8E4; border-radius: 3px; }
+
+/* ── MOBILE ── */
+@media (max-width: 640px) {
+  header { padding: 12px 14px; }
+  header h1 { font-size: 1.25rem; }
+  .header-inner { gap: 8px; }
+  .header-date { padding: 5px 10px; }
+  .header-date label { font-size: 0.72rem; }
+
+  .app-layout {
+    flex-direction: column;
+    height: auto;
+  }
+
+  /* Sidebar becomes a compact top strip */
+  .sidebar {
+    width: 100%;
+    min-width: unset;
+    height: auto;
+    border-right: none;
+    border-bottom: 2px solid var(--border);
+    padding: 8px 10px;
+    gap: 6px;
+    overflow: visible;
+  }
+
+  .sidebar-title { display: none; }
+  .sidebar-hint  { display: none; }
+  .category-label { display: none; }
+
+  /* Activity cards scroll horizontally */
+  .activity-pool {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    gap: 6px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .activity-card {
+    flex-shrink: 0;
+    min-width: 130px;
+    padding: 8px 10px;
+    touch-action: none; /* required for touch DnD */
+  }
+
+  /* Trash becomes a slim strip below the pool */
+  .trash-zone {
+    padding: 7px 12px;
+    font-size: 0.7rem;
+  }
+
+  /* Schedule scrolls horizontally */
+  .schedule-wrap {
+    padding: 10px 10px 14px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .schedule { min-width: 680px; }
+
+  .slot-zone { min-height: 68px; padding: 4px; }
+  .placed-card { padding: 5px 6px; }
+  .placed-card .p-name { font-size: 0.62rem; }
+  .placed-card .p-dur  { display: none; }
+
+  /* Below-calendar tabs wrap on small screens */
+  .bc-tabs { flex-wrap: wrap; }
+  .bc-tab  { font-size: 0.72rem; padding: 5px 11px; }
+
+  /* Info grids go single-column */
+  .transit-grid,
+  .neighbourhood-grid,
+  .combos-grid { grid-template-columns: 1fr; }
+}
