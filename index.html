@@ -23,19 +23,27 @@
 
     <aside class="sidebar">
       <h2 class="sidebar-title">✨ Activities</h2>
+      <select id="category-filter" class="category-filter">
+        <option value="all">All activities</option>
+        <option value="full-day">🗓 Full Day</option>
+        <option value="museums">🏛 Museums & Landmarks</option>
+        <option value="outdoors">🌿 Parks & Outdoors</option>
+        <option value="neighbourhoods">🏙 Neighbourhoods</option>
+        <option value="evenings">🌙 Evenings</option>
+      </select>
       <p class="sidebar-hint">Drag onto a day →</p>
       <div id="activity-pool" class="activity-pool"></div>
       <div id="trash-zone" class="trash-zone">
         <span>🗑️ Drop here to remove</span>
       </div>
-      <details class="rules-panel">
-        <summary>📋 Legend</summary>
-        <div id="legend-grid" class="legend-grid"></div>
-      </details>
     </aside>
 
     <main class="schedule-wrap">
       <div id="schedule" class="schedule"></div>
+      <div class="legend-section">
+        <h3 class="legend-heading">📋 Legend</h3>
+        <div id="legend-grid" class="legend-grid"></div>
+      </div>
     </main>
 
   </div>

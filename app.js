@@ -146,6 +146,14 @@ const ACTIVITIES = {
   }
 };
 
+const CATEGORIES = [
+  { key: 'full-day',       label: '🗓 Full Day',             ids: ['wonderland', 'niagara', 'zoo'] },
+  { key: 'museums',        label: '🏛 Museums & Landmarks',  ids: ['rom', 'ago', 'casaloma', 'cntower', 'hockeyHall', 'aquarium'] },
+  { key: 'outdoors',       label: '🌿 Parks & Outdoors',     ids: ['islands', 'highpark', 'bluffs', 'harbourfront'] },
+  { key: 'neighbourhoods', label: '🏙 Neighbourhoods',       ids: ['distillery', 'kensington', 'stlawrence'] },
+  { key: 'evenings',       label: '🌙 Evenings',             ids: ['dinner', 'theatre', 'sports'] },
+];
+
 const SLOT_LABELS = [
   { id: 'morning',   label: '☀️ Morning'   },
   { id: 'afternoon', label: '🌤️ Afternoon' },
@@ -317,33 +325,55 @@ function renderAll() {
   renderSchedule();
 }
 
+function makeActivityCard(act) {
+  const placed = isPlaced(act.id);
+  const card = document.createElement('div');
+  card.className = `activity-card${placed ? ' placed' : ''}`;
+  card.draggable = true;
+  card.dataset.activityId = act.id;
+  card.style.cssText = `background:${act.bg}; border-color:${act.color}; color:${act.color};`;
+  card.innerHTML = `
+    <span class="ac-emoji">${act.emoji}</span>
+    <div class="ac-text">
+      <span class="ac-name">${act.name}</span>
+      <span class="ac-duration">${act.duration}</span>
+    </div>
+  `;
+  card.addEventListener('dragstart', e => {
+    dragging = { activityId: act.id, fromPool: true };
+    e.dataTransfer.effectAllowed = 'move';
+    setTimeout(() => { card.style.opacity = '0.4'; }, 0);
+  });
+  card.addEventListener('dragend', () => {
+    card.style.opacity = '';
+    dragging = null;
+  });
+  return card;
+}
+
 function renderPool() {
   const pool = document.getElementById('activity-pool');
   pool.innerHTML = '';
-  Object.values(ACTIVITIES).forEach(act => {
-    const placed = isPlaced(act.id);
-    const card = document.createElement('div');
-    card.className = `activity-card${placed ? ' placed' : ''}`;
-    card.draggable = true;
-    card.dataset.activityId = act.id;
-    card.style.cssText = `background:${act.bg}; border-color:${act.color}; color:${act.color};`;
-    card.innerHTML = `
-      <span class="ac-emoji">${act.emoji}</span>
-      <div class="ac-text">
-        <span class="ac-name">${act.name}</span>
-        <span class="ac-duration">${act.duration}</span>
-      </div>
-    `;
-    card.addEventListener('dragstart', e => {
-      dragging = { activityId: act.id, fromPool: true };
-      e.dataTransfer.effectAllowed = 'move';
-      setTimeout(() => { card.style.opacity = '0.4'; }, 0);
+
+  const filterEl = document.getElementById('category-filter');
+  const activeFilter = filterEl ? filterEl.value : 'all';
+  const filtered = activeFilter === 'all'
+    ? CATEGORIES
+    : CATEGORIES.filter(cat => cat.key === activeFilter);
+  const showLabels = activeFilter === 'all';
+
+  filtered.forEach(cat => {
+    if (showLabels) {
+      const label = document.createElement('div');
+      label.className = 'category-label';
+      label.textContent = cat.label;
+      pool.appendChild(label);
+    }
+
+    cat.ids.forEach(id => {
+      const act = ACTIVITIES[id];
+      if (act) pool.appendChild(makeActivityCard(act));
     });
-    card.addEventListener('dragend', () => {
-      card.style.opacity = '';
-      dragging = null;
-    });
-    pool.appendChild(card);
   });
 }
 
@@ -518,3 +548,4 @@ renderAll();
 renderLegend();
 setupTrash();
 setupDatePicker();
+document.getElementById('category-filter').addEventListener('change', renderPool);
