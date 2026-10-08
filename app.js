@@ -478,22 +478,200 @@ function renderSchedule() {
   });
 }
 
-function renderLegend() {
-  const grid = document.getElementById('legend-grid');
+// ─── DAY COMBOS ──────────────────────────────────────────────────
+
+const DAY_COMBOS = [
+  {
+    title: '🌊 Waterfront Day',
+    steps: [
+      { time: 'Morning',   text: 'CN Tower — views + EdgeWalk' },
+      { time: 'Afternoon', text: "Ripley's Aquarium next door" },
+      { time: 'Evening',   text: "Harbourfront walk + dinner on King West" },
+    ],
+    tip: 'CN Tower and Aquarium share a plaza — no travel between them.'
+  },
+  {
+    title: '🏛 Culture Day',
+    steps: [
+      { time: 'Morning',   text: 'Royal Ontario Museum (ROM)' },
+      { time: 'Afternoon', text: 'AGO or Kensington Market (10 min walk apart)' },
+      { time: 'Evening',   text: 'Dinner in Chinatown or Little Italy' },
+    ],
+    tip: 'AGO is free for under-25s. ROM is best with 2–3 hrs.'
+  },
+  {
+    title: '🏰 Historic East Side',
+    steps: [
+      { time: 'Morning',   text: 'St. Lawrence Market — grab breakfast' },
+      { time: 'Afternoon', text: 'Distillery District — galleries & patios' },
+      { time: 'Evening',   text: 'Theatre show or sports game downtown' },
+    ],
+    tip: 'St. Lawrence closes Mondays. Market is busiest on Saturday mornings.'
+  },
+  {
+    title: '🏝 Islands + Waterfront',
+    steps: [
+      { time: 'Morning',   text: 'Ferry to Toronto Islands from Jack Layton Terminal' },
+      { time: 'Afternoon', text: "Return + Harbourfront + Queen's Quay stroll" },
+      { time: 'Evening',   text: 'Dinner on the waterfront or King West' },
+    ],
+    tip: 'Check ferry times — they run every 15–30 min. Last ferry ~11pm in summer.'
+  },
+  {
+    title: '🌳 Parks & Views',
+    steps: [
+      { time: 'Morning',   text: 'High Park — trails, Grenadier Pond, free entry' },
+      { time: 'Afternoon', text: 'Scarborough Bluffs — 15km east, free, stunning views' },
+      { time: 'Evening',   text: 'The Beaches neighbourhood for dinner' },
+    ],
+    tip: 'These are far apart — grab an Uber between them (~25 min). Worth it.'
+  },
+  {
+    title: '🎢 Big Day Out',
+    steps: [
+      { time: 'All day',   text: "Canada's Wonderland or Niagara Falls" },
+    ],
+    tip: "Leave by 8am. Both are 1–2 hrs from downtown. Book Wonderland tickets online to skip the queue."
+  },
+];
+
+function renderCombos() {
+  const grid = document.getElementById('combos-grid');
   grid.innerHTML = '';
-  Object.values(ACTIVITIES).forEach(act => {
-    const item = document.createElement('div');
-    item.className = 'legend-item';
-    item.style.cssText = `background:${act.bg}; border-color:${act.color};`;
-    item.innerHTML = `
-      <span class="legend-emoji">${act.emoji}</span>
+  DAY_COMBOS.forEach(combo => {
+    const card = document.createElement('div');
+    card.className = 'combo-card';
+    const stepsHtml = combo.steps.map(s =>
+      `<div class="combo-step"><span class="combo-step-time">${s.time}</span>${s.text}</div>`
+    ).join('');
+    card.innerHTML = `
+      <div class="combo-title">${combo.title}</div>
+      <div class="combo-steps">${stepsHtml}</div>
+      <div class="combo-tip">💡 ${combo.tip}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ─── TRANSIT ─────────────────────────────────────────────────────
+
+const TRANSIT_CARDS = [
+  {
+    icon: '🪙',
+    title: 'Presto Card',
+    body: '$3.30/ride. Load at Union Station, Pearson Airport, or any subway station. Tap on buses, streetcars and subway. Transfers included within 2 hours.',
+    tag: 'Get one first thing'
+  },
+  {
+    icon: '🚇',
+    title: 'TTC Subway',
+    body: 'Line 1 (Yonge–University) runs north–south through downtown. Line 2 (Bloor–Danforth) crosses east–west. Most attractions are on or near Line 1.',
+    tag: 'Runs until ~1:30am'
+  },
+  {
+    icon: '✈️',
+    title: 'UP Express',
+    body: '$12.35 from Pearson Airport to Union Station in 25 minutes. Runs every 15 min. Much faster than a taxi through downtown traffic.',
+    tag: 'Airport → downtown'
+  },
+  {
+    icon: '🚲',
+    title: 'Bike Share Toronto',
+    body: '$7/day or $15/3-day pass. Hundreds of docks downtown. Great for the waterfront trail and flat routes around the city.',
+    tag: 'Best for waterfront'
+  },
+  {
+    icon: '🚗',
+    title: 'Uber / Lyft',
+    body: 'Reliable and usually quick. Best for late nights, far-flung spots (Bluffs, High Park) and rainy days. Avoid driving downtown — parking is $20–30/day.',
+    tag: 'Skip the rental car'
+  },
+];
+
+function renderTransit() {
+  const grid = document.getElementById('transit-grid');
+  grid.innerHTML = '';
+  TRANSIT_CARDS.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'transit-card';
+    card.innerHTML = `
+      <span class="transit-icon">${item.icon}</span>
       <div>
-        <div class="l-name" style="color:${act.color}">${act.name}</div>
-        <div class="l-duration" style="color:${act.color}">${act.duration}</div>
-        <div class="l-rule">${act.rule}</div>
+        <div class="transit-title">${item.title}</div>
+        <div class="transit-body">${item.body}</div>
+        <span class="transit-tag">${item.tag}</span>
       </div>
     `;
-    grid.appendChild(item);
+    grid.appendChild(card);
+  });
+}
+
+// ─── NEIGHBOURHOODS ───────────────────────────────────────────────
+
+const NEIGHBOURHOODS = [
+  {
+    title: '🌊 The Waterfront',
+    vibe: 'Scenic · Relaxed · All ages',
+    body: "Lake Ontario from Harbourfront to Sugar Beach. Walk or bike the Martin Goodman Trail. Ferry terminal for Toronto Islands. Beautiful at sunset.",
+    tip: "Don't miss: Trillium Park and the view from the end of the pier at dusk."
+  },
+  {
+    title: '🏙 King West / Entertainment District',
+    vibe: 'Busy · Trendy · Night out',
+    body: "Toronto's nightlife hub. Great restaurants, rooftop bars and live music. Home to the CN Tower and Rogers Centre. Buzzing any night of the week.",
+    tip: "Don't miss: a walk down King St W from Spadina to University."
+  },
+  {
+    title: '🎨 Queen West',
+    vibe: 'Indie · Stylish · Coffee + art',
+    body: "Boutiques, galleries, vintage shops and some of the best coffee in the city. Spills into West Queen West which is even more eclectic.",
+    tip: "Don't miss: Trinity Bellwoods Park on a sunny weekend afternoon."
+  },
+  {
+    title: '🌿 Kensington Market',
+    vibe: 'Bohemian · Multicultural · Affordable',
+    body: "Toronto's most colourful neighbourhood. Vintage clothing, street food, indie cafés, cheese shops and live music pouring out of windows.",
+    tip: "Don't miss: last Sunday of the month = Pedestrian Sunday (cars banned, street festival vibes)."
+  },
+  {
+    title: '🏭 Distillery District',
+    vibe: 'Historic · Artisan · Instagram-worthy',
+    body: "Perfectly preserved Victorian industrial architecture. Cobblestone streets lined with galleries, chocolate shops, microbreweries and restaurants.",
+    tip: "Don't miss: the seasonal festivals (Christmas Market in Nov–Dec is magical)."
+  },
+  {
+    title: '📚 The Annex',
+    vibe: 'University · Bookshops · Brunch',
+    body: "University of Toronto neighbourhood full of good bookshops, pubs and brunch spots. Bloor St W here is one of the best stretches for eating.",
+    tip: "Don't miss: Bloor Street Diner for brunch, then walk south to ROM."
+  },
+  {
+    title: '🍳 Leslieville',
+    vibe: 'Relaxed · East-end · Brunch capital',
+    body: "Quieter east-end neighbourhood popular with locals. Excellent brunch spots, independent coffee shops and a community feel far from the tourist crowds.",
+    tip: "Don't miss: Lady Marmalade or Saving Grace for brunch (arrive early on weekends)."
+  },
+  {
+    title: '🥟 Chinatown & Little Italy',
+    vibe: 'Lively · Affordable · Great food',
+    body: "Two of Toronto's most lively food neighbourhoods, side by side along College and Spadina. Endless restaurants, late-night bakeries and street energy.",
+    tip: "Don't miss: dim sum on Spadina (any weekend morning) or a Kensington visit right after."
+  },
+];
+
+function renderNeighbourhoods() {
+  const grid = document.getElementById('neighbourhood-grid');
+  grid.innerHTML = '';
+  NEIGHBOURHOODS.forEach(nb => {
+    const card = document.createElement('div');
+    card.className = 'nb-card';
+    card.innerHTML = `
+      <div class="nb-title">${nb.title}</div>
+      <div class="nb-vibe">${nb.vibe}</div>
+      <div class="nb-body">${nb.body}</div>
+      <div class="nb-tip">✦ ${nb.tip}</div>
+    `;
+    grid.appendChild(card);
   });
 }
 
@@ -545,7 +723,9 @@ function showToast(message, type = '') {
 
 loadState();
 renderAll();
-renderLegend();
+renderCombos();
+renderTransit();
+renderNeighbourhoods();
 setupTrash();
 setupDatePicker();
 document.getElementById('category-filter').addEventListener('change', renderPool);
